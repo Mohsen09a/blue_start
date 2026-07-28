@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Raw data and local databases
+data/*
+!data/README.md
+!data/bsky_data_codebook_v2_20251211.pdf
+work/
+*.duckdb
+*.duckdb.wal
+
+# Downloaded upstream repository
+reference/upstream-a-blue-start/
+
+# Large generated artifacts that exceed normal GitHub limits
+outputs/parquet/follow_degrees_full.parquet
+outputs/parquet/follow_time_std_full.parquet
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+

@@ -1,0 +1,20 @@
+{
+  "task": "reference_import",
+  "seconds": 3.79364779999014,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\reference_follow_scc_distribution.parquet",
+    "E:\\final_proj\\outputs\\parquet\\reference_follow_wcc_distribution.parquet",
+    "E:\\final_proj\\outputs\\parquet\\reference_s_line_counts.parquet",
+    "E:\\final_proj\\outputs\\parquet\\reference_kcore_distribution.parquet",
+    "E:\\final_proj\\outputs\\parquet\\reference_pair_cooccurrence_distribution.parquet"
+  ],
+  "summary": {
+    "source": "https://github.com/nwlandry/a-blue-start",
+    "largest_follow_scc": 20495220,
+    "largest_follow_wcc": 36433172,
+    "nodes_with_kcore_at_least_1000": 772,
+    "community_labels": "E:\\final_proj\\reference\\upstream-a-blue-start\\data\\node_labels.json",
+    "edge_entropy": "E:\\final_proj\\reference\\upstream-a-blue-start\\data\\edge_entropy.json",
+    "warning": "These are official upstream artifacts, not locally recomputed values."
+  }
+}

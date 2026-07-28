@@ -1,0 +1,12 @@
+{
+  "task": "starterpack_components",
+  "seconds": 15.03019249998033,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\starterpack_component_sizes.parquet"
+  ],
+  "summary": {
+    "component_count": 409,
+    "largest_component_size": 1997488,
+    "node_count": 2003536
+  }
+}

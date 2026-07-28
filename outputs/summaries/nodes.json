@@ -1,0 +1,14 @@
+{
+  "task": "nodes",
+  "seconds": 0.4482382999849506,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\node_creation_volume.parquet",
+    "E:\\final_proj\\outputs\\parquet\\node_status_counts.parquet"
+  ],
+  "summary": {
+    "total_nodes": 39650447,
+    "active_nodes": 36687381,
+    "extant_nodes": 37479031,
+    "unknown_activity": 791650
+  }
+}

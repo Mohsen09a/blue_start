@@ -1,0 +1,15 @@
+[duckdb]
+# DuckDB's own documentation recommends 50-60% of RAM for OOM-prone workloads.
+# This leaves enough memory for Windows, Python, and non-buffer-manager allocations.
+memory_limit = "18GB"
+threads = 8
+max_temp_directory_size = "250GB"
+preserve_insertion_order = false
+enable_progress_bar = true
+
+[paths]
+database = "work/blue_start.duckdb"
+temp_directory = "work/duckdb_tmp"
+parquet_outputs = "outputs/parquet"
+summary_outputs = "outputs/summaries"
+figure_outputs = "outputs/figures"

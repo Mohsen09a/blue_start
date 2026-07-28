@@ -1,0 +1,13 @@
+{
+  "task": "pair_cooccurrence_max_pack_10",
+  "seconds": 0.2611447999952361,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\pair_cooccurrence_max_pack_10.parquet"
+  ],
+  "summary": {
+    "max_pack_size": 10,
+    "distinct_pairs": 1950400,
+    "maximum_cooccurrence": 3913,
+    "exact_for_included_packs": true
+  }
+}

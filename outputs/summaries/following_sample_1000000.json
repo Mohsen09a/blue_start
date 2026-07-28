@@ -1,0 +1,18 @@
+{
+  "task": "following_sample_1000000",
+  "seconds": 0.714953400020022,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\follow_volume_sample_1000000.parquet",
+    "E:\\final_proj\\outputs\\parquet\\follow_degrees_sample_1000000.parquet",
+    "E:\\final_proj\\outputs\\parquet\\follow_degree_distribution_sample_1000000.parquet",
+    "E:\\final_proj\\outputs\\parquet\\follow_time_std_sample_1000000.parquet"
+  ],
+  "summary": {
+    "profile": "sample_1000000",
+    "edge_count": 1000000,
+    "nodes_with_any_follow_edge": 537867,
+    "maximum_in_degree": 12598,
+    "maximum_out_degree": 29645,
+    "impossible_timestamp_count": 3
+  }
+}

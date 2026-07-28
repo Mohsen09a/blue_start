@@ -1,0 +1,17 @@
+{
+  "task": "s_line_s3_member_degree_10",
+  "seconds": 0.8205933999852277,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\s_line_s3_member_degree_10.parquet"
+  ],
+  "summary": {
+    "s_max": 3,
+    "max_member_degree": 10,
+    "edge_counts": {
+      "1": 3864201,
+      "2": 532996,
+      "3": 242788
+    },
+    "note": "Exact only for the hypergraph after filtering high-degree members."
+  }
+}

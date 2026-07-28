@@ -1,0 +1,13 @@
+{
+  "task": "prepare",
+  "seconds": 1.1154160000151023,
+  "outputs": [
+    "E:\\final_proj\\work\\blue_start.duckdb"
+  ],
+  "summary": {
+    "nodes": 39650447,
+    "starterpacks": 365842,
+    "memberships": 12812086,
+    "follow_edges": 2416311437
+  }
+}

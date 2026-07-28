@@ -1,0 +1,22 @@
+{
+  "task": "starterpacks",
+  "seconds": 0.6599656000034884,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\starterpack_degree_distribution.parquet",
+    "E:\\final_proj\\outputs\\parquet\\starterpack_size_distribution.parquet",
+    "E:\\final_proj\\outputs\\parquet\\starterpack_creation_volume.parquet",
+    "E:\\final_proj\\outputs\\parquet\\starterpacks_created_per_user.parquet",
+    "E:\\final_proj\\outputs\\parquet\\starterpack_creator_ages.parquet"
+  ],
+  "summary": {
+    "starterpack_count": 365842,
+    "member_node_count": 2003536,
+    "minimum_degree": 1,
+    "maximum_degree": 175320,
+    "mean_degree": 6.394737104798716,
+    "minimum_pack_size": 0,
+    "maximum_pack_size": 4661,
+    "mean_pack_size": 35.02081773005833,
+    "negative_creator_age_count": 9
+  }
+}
