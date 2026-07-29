@@ -1,0 +1,15 @@
+{
+  "task": "follow_wcc_local",
+  "seconds": 105.52825639999901,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\follow_wcc_distribution_local.parquet"
+  ],
+  "summary": {
+    "exact": true,
+    "edge_count": 2416311437,
+    "follow_network_nodes": 36447725,
+    "component_count": 6735,
+    "largest_component_size": 36433172,
+    "batch_size": 4000000
+  }
+}

@@ -1,5 +1,11 @@
 # Initial Project Plan
 
+> Status update: the complete paper-reproduction phase is now finished,
+> including exact SCC/WCC, exact k-core, pair co-occurrence, weighted clique
+> projection, unrestricted s-line, independent Leiden, entropy, configuration
+> model, Kendall tau, and figures. The phases below now describe possible novel
+> thesis extensions.
+
 ## Interpretation of the Paper
 
 The paper releases an aligned, anonymized dataset with two relationship types:
@@ -90,4 +96,3 @@ and available hardware.
 - What evaluation metric will define success?
 - Which outputs are required by the supervisor: code, figures, a report, a
   model, or all of them?
-

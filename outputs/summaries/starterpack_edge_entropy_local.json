@@ -1,0 +1,18 @@
+{
+  "task": "starterpack_edge_entropy_local",
+  "seconds": 2.613097299999936,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\starterpack_edge_entropy_local.parquet"
+  ],
+  "summary": {
+    "independently_recomputed": true,
+    "community_labels_source": "E:\\final_proj\\reference\\upstream-a-blue-start\\data\\node_labels.json",
+    "labeled_node_count": 1997488,
+    "community_count": 503,
+    "fully_labeled_pack_count": 365157,
+    "mean_normalized_entropy": 0.16041573184621288,
+    "zero_entropy_pack_count": 62344,
+    "zero_entropy_fraction": 0.1707320412863508,
+    "maximum_normalized_entropy": 1.0
+  }
+}

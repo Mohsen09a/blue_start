@@ -64,9 +64,10 @@ dates.
 - Very large packs exist because list-to-pack conversion tools can bypass the
   normal user-interface limits.
 
-The locally supplied November dataset is newer than the paper snapshot. It
-contains a maximum pack size of 4,661 rather than the paper's reported 4,069,
-and nine negative creator ages rather than eight.
+After deduplicating memberships with hyperedge-set semantics, the supplied
+data has a maximum pack size of 4,069, matching the threshold used by the
+paper's pair-co-occurrence analysis. Small raw-membership differences can
+still appear when duplicate incidences are counted before deduplication.
 
 ## Computational Implications
 
@@ -93,4 +94,3 @@ intermediate outputs.
    age and account age.
 5. Removing extremely frequent hub accounts reveals stronger alignment between
    communities in the two network representations.
-

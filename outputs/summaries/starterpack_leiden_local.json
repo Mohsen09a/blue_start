@@ -1,0 +1,41 @@
+{
+  "task": "starterpack_leiden_local",
+  "seconds": 4.316223699999682,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\starterpack_leiden_labels_local.parquet",
+    "E:\\final_proj\\outputs\\parquet\\starterpack_leiden_community_sizes_local.parquet",
+    "E:\\final_proj\\work\\starterpack_leiden"
+  ],
+  "summary": {
+    "complete": true,
+    "independently_computed": true,
+    "full_graph": true,
+    "backend": "C/igraph 0.10.16, 32-bit integer build",
+    "algorithm": "igraph_community_leiden modularity",
+    "paper_objective_and_parameters": true,
+    "same_backend_as_paper": false,
+    "why_native_backend_was_used": "The paper's 64-bit Python igraph constructor reached 95.9% total system RAM before Leiden started.",
+    "seed": 0,
+    "iterations": 2,
+    "beta": 0.01,
+    "unweighted": true,
+    "giant_node_count": 1997488,
+    "giant_edge_count": 245669033,
+    "community_count": 740,
+    "largest_community": 434820,
+    "top_five_community_sizes": [
+      434820,
+      333066,
+      151041,
+      124764,
+      107048
+    ],
+    "modularity": 0.66164938147,
+    "official_community_count": 503,
+    "official_normalized_mutual_information": 0.8733409410173913,
+    "official_adjusted_rand_index": 0.843200234701468,
+    "graph_construction_seconds": 184.062,
+    "leiden_seconds": 687.64,
+    "observed_working_set_gb": 8.2
+  }
+}

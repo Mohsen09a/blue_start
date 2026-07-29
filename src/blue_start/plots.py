@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 
 from .duckdb_backend import connect
-from .reference import upstream_root
 from .settings import load_settings
 
 
@@ -105,14 +104,14 @@ def plot_following(profile: str = "full") -> list[str]:
         scc = con.execute(
             """
             SELECT component_size, component_count
-            FROM results.reference_follow_scc_distribution
+            FROM results.follow_scc_distribution_local
             ORDER BY component_size
             """
         ).fetchall()
         wcc = con.execute(
             """
             SELECT component_size, component_count
-            FROM results.reference_follow_wcc_distribution
+            FROM results.follow_wcc_distribution_local
             ORDER BY component_size
             """
         ).fetchall()
@@ -155,20 +154,20 @@ def plot_following(profile: str = "full") -> list[str]:
         [row[0] for row in scc],
         [row[1] for row in scc],
         s=10,
-        label="Strongly connected",
+        label="Strongly connected (local exact)",
     )
     component_axis.scatter(
         [row[0] for row in wcc],
         [row[1] for row in wcc],
         s=10,
         marker="^",
-        label="Weakly connected",
+        label="Weakly connected (local exact)",
     )
     component_axis.set_xscale("log")
     component_axis.set_yscale("log")
     component_axis.set_xlabel("Component size")
     component_axis.set_ylabel("Number")
-    component_axis.set_title("(c) Official component results")
+    component_axis.set_title("(c) Components (local exact)")
     component_axis.legend()
     figure.tight_layout()
     return _save(figure, settings.figure_outputs / f"following_network_{profile}")
@@ -268,30 +267,41 @@ def plot_mesoscale() -> list[str]:
     settings = load_settings()
     with connect(settings, read_only=True) as con:
         s_line = con.execute(
-            "SELECT s, edges FROM results.reference_s_line_counts ORDER BY s"
+            "SELECT s, edges FROM results.s_line_full_local ORDER BY s"
         ).fetchall()
         kcore = con.execute(
             """
             SELECT core_number, node_count
-            FROM results.reference_kcore_distribution
+            FROM results.starterpack_kcore_distribution_local
             ORDER BY core_number
             """
         ).fetchall()
         pairs = con.execute(
             """
             SELECT cooccurrence, pair_count
-            FROM results.reference_pair_cooccurrence_distribution
+            FROM results.pair_cooccurrence_paper_compatible
             ORDER BY cooccurrence
             """
         ).fetchall()
+        entropies = [
+            row[0]
+            for row in con.execute(
+                """
+                SELECT normalized_entropy
+                FROM results.starterpack_edge_entropy_independent
+                """
+            ).fetchall()
+        ]
+        randomized_entropies = [
+            row[0]
+            for row in con.execute(
+                """
+                SELECT normalized_entropy
+                FROM results.starterpack_configuration_entropy_independent
+                """
+            ).fetchall()
+        ]
         pack_count = con.execute("SELECT count(*) FROM starterpacks").fetchone()[0]
-
-    entropy_path = upstream_root() / "data" / "edge_entropy.json"
-    entropies: list[float] = []
-    if entropy_path.exists():
-        payload = json.loads(entropy_path.read_text(encoding="utf-8"))
-        values = payload.values() if isinstance(payload, dict) else payload
-        entropies = [float(value) for value in values]
 
     figure, axes = plt.subplots(2, 2, figsize=(11, 8))
     max_pairs = pack_count * (pack_count - 1) / 2
@@ -304,25 +314,95 @@ def plot_mesoscale() -> list[str]:
     axes[0, 0].set_yscale("log")
     axes[0, 0].set_xlabel("Edge overlap s")
     axes[0, 0].set_ylabel("Line-graph density")
+    axes[0, 0].set_title("(a) s-line graph (local exact)")
 
     axes[0, 1].scatter([r[0] for r in kcore], [r[1] for r in kcore], s=8)
     axes[0, 1].set_xscale("log")
     axes[0, 1].set_yscale("log")
     axes[0, 1].set_xlabel("Coreness")
     axes[0, 1].set_ylabel("Node count")
+    axes[0, 1].set_title("(b) Hypergraph k-core (local exact)")
 
     axes[1, 0].scatter([r[0] for r in pairs], [r[1] for r in pairs], s=8)
     axes[1, 0].set_xscale("log")
     axes[1, 0].set_yscale("log")
     axes[1, 0].set_xlabel("Pair co-occurrence")
     axes[1, 0].set_ylabel("Pair count")
+    axes[1, 0].set_title("(c) Pair co-occurrence (local exact)")
 
-    if entropies:
-        axes[1, 1].hist(entropies, bins=100, color=COLORS[0])
+    bins = np.linspace(0.0, 1.0, 81)
+    axes[1, 1].hist(
+        entropies,
+        bins=bins,
+        density=True,
+        alpha=0.65,
+        color=COLORS[0],
+        label="Observed",
+    )
+    axes[1, 1].hist(
+        randomized_entropies,
+        bins=bins,
+        density=True,
+        alpha=0.5,
+        color=COLORS[1],
+        label="Configuration model",
+    )
     axes[1, 1].set_xlabel("Normalized edge entropy")
-    axes[1, 1].set_ylabel("Count")
+    axes[1, 1].set_ylabel("Density")
+    axes[1, 1].set_title("(d) Community entropy (independent Leiden)")
+    axes[1, 1].legend()
     figure.tight_layout()
     return _save(figure, settings.figure_outputs / "starterpack_mesoscale")
+
+
+def plot_projection() -> list[str]:
+    plt, np = _libraries()
+    settings = load_settings()
+    with connect(settings, read_only=True) as con:
+        degrees = con.execute(
+            """
+            SELECT degree, node_count
+            FROM results.starterpack_projection_degree_distribution_local
+            ORDER BY degree
+            """
+        ).fetchall()
+        weights = con.execute(
+            """
+            SELECT cooccurrence, pair_count
+            FROM results.pair_cooccurrence_paper_compatible
+            ORDER BY cooccurrence
+            """
+        ).fetchall()
+
+    figure, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+    axes[0].scatter(
+        np.asarray([row[0] for row in degrees], dtype=float),
+        np.asarray([row[1] for row in degrees], dtype=float),
+        s=9,
+        color=COLORS[0],
+    )
+    axes[0].set_xscale("log")
+    axes[0].set_yscale("log")
+    axes[0].set_xlabel("Projected degree")
+    axes[0].set_ylabel("Node count")
+    axes[0].set_title("(a) Weighted clique projection degree")
+
+    axes[1].scatter(
+        np.asarray([row[0] for row in weights], dtype=float),
+        np.asarray([row[1] for row in weights], dtype=float),
+        s=9,
+        color=COLORS[1],
+    )
+    axes[1].set_xscale("log")
+    axes[1].set_yscale("log")
+    axes[1].set_xlabel("Edge weight (shared packs)")
+    axes[1].set_ylabel("Projected edge count")
+    axes[1].set_title("(b) Projection edge weights")
+    figure.tight_layout()
+    return _save(
+        figure,
+        settings.figure_outputs / "starterpack_clique_projection",
+    )
 
 
 def plot_kendall(profile: str = "full") -> list[str]:
@@ -352,11 +432,59 @@ def plot_kendall(profile: str = "full") -> list[str]:
     return _save(figure, settings.figure_outputs / f"kendall_tau_{profile}")
 
 
+def plot_leiden() -> list[str]:
+    """Plot the full independent Leiden community-size distribution."""
+    plt, np = _libraries()
+    settings = load_settings()
+    with connect(settings, read_only=True) as con:
+        sizes = np.asarray(
+            [
+                row[0]
+                for row in con.execute(
+                    """
+                    SELECT node_count
+                    FROM results.starterpack_leiden_community_sizes_local
+                    ORDER BY node_count DESC
+                    """
+                ).fetchall()
+            ],
+            dtype=float,
+        )
+
+    summary_path = settings.summary_outputs / "starterpack_leiden_local.json"
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))["summary"]
+    figure, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+    ranks = np.arange(1, len(sizes) + 1)
+    axes[0].scatter(ranks, sizes, s=10, color=COLORS[0])
+    axes[0].set_xscale("log")
+    axes[0].set_yscale("log")
+    axes[0].set_xlabel("Community rank")
+    axes[0].set_ylabel("Nodes")
+    axes[0].set_title("(a) Independent Leiden community sizes")
+
+    top_count = min(20, len(sizes))
+    axes[1].bar(
+        np.arange(1, top_count + 1),
+        sizes[:top_count],
+        color=COLORS[1],
+    )
+    axes[1].set_xlabel("Community rank")
+    axes[1].set_ylabel("Nodes")
+    axes[1].set_title(
+        "(b) Largest communities\n"
+        f"Q={summary['modularity']:.3f}, NMI={summary['official_normalized_mutual_information']:.3f}"
+    )
+    figure.tight_layout()
+    return _save(figure, settings.figure_outputs / "starterpack_leiden_independent")
+
+
 def plot_all(profile: str = "full") -> list[str]:
     outputs: list[str] = []
     outputs.extend(plot_nodes())
     outputs.extend(plot_following(profile))
     outputs.extend(plot_starterpacks())
     outputs.extend(plot_mesoscale())
+    outputs.extend(plot_projection())
+    outputs.extend(plot_leiden())
     outputs.extend(plot_kendall(profile))
     return outputs

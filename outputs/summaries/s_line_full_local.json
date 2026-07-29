@@ -1,0 +1,28 @@
+{
+  "task": "s_line_full_local",
+  "seconds": 1.063962599997467,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\s_line_full_local.parquet",
+    "E:\\final_proj\\work\\sline_full\\batches\\smax_345_batch_4096"
+  ],
+  "summary": {
+    "complete": true,
+    "exact": true,
+    "unrestricted": true,
+    "deduplicated_set_semantics": true,
+    "s_min": 1,
+    "s_max": 345,
+    "pack_count": 365842,
+    "node_count": 2003536,
+    "incidence_count": 12703609,
+    "distinct_s1_pack_pairs": 19559507901,
+    "s1_active_packs": 365228,
+    "maximum_observed_overlap_at_least": 345,
+    "batch_packs": 4096,
+    "threads": 8,
+    "total_batches": 90,
+    "official_distribution_differing_rows": 0,
+    "official_distribution_exact_match": true,
+    "input_build_seconds": 0.0005291999987093732
+  }
+}

@@ -1,32 +1,29 @@
-# DuckDB Guide for a 32 GB Workstation
+# DuckDB and Resource Guide for a 32 GB Workstation
 
 ## Architecture
 
-The follow dataset contains 2,416,311,437 rows and is not copied into the
-database. The `follows` relation is an external view over the Parquet file, so
-DuckDB reads only the required columns and can push filters into the scan.
+The 2,416,311,437-row follow dataset remains an external Parquet relation.
+DuckDB reads required columns and spills bounded intermediates to disk.
+Smaller node and Starter Pack relations are materialized in
+`work/blue_start.duckdb`.
 
-The smaller datasets are materialized once:
+Large graph algorithms use additional bounded representations:
 
-- `nodes`: 39,650,447 rows;
-- `starterpacks`: 365,842 rows;
-- `starterpack_memberships`: 12,812,086 rows.
+- partitioned Parquet follow indexes;
+- disk-backed CSR arrays for exact SCC;
+- partitioned weighted clique-projection files;
+- a 32-bit native C/igraph Leiden backend;
+- compact bidirectional CSR plus native batches for exact s-line counts.
 
-Computed relations are stored in the `results` schema. Portable result files
-are written to `outputs/parquet/`.
+## Default Limits
 
-## Resource Limits
-
-The defaults in `config/default.toml` are:
+`config/default.toml` uses:
 
 - DuckDB memory limit: `18GB`;
 - worker threads: `8`;
 - spill directory: `work/duckdb_tmp`;
 - maximum spill size: `250GB`;
-- `preserve_insertion_order=false`.
-
-DuckDB reports decimal GB values as binary GiB values. Therefore, an `18GB`
-limit appears as approximately `16.7 GiB`; this is expected.
+- insertion-order preservation disabled.
 
 Temporary overrides:
 
@@ -36,71 +33,75 @@ set BLUE_START_THREADS=6
 python -m blue_start.cli doctor
 ```
 
-## Observed Runtime on the Development Machine
+## Completed Large Workloads
 
-- preparing nodes and starter packs: approximately 8 seconds;
-- exact hypergraph connected components: approximately 15 seconds;
-- full follow degree and volume analysis: approximately 170 seconds;
-- temporal standard deviations and timestamp validation: approximately 247 seconds;
-- Kendall tau for the top one million nodes: approximately 15 seconds.
+| Workload | Result |
+|---|---|
+| Follow aggregation | All 2.416 billion edges |
+| Follow indexes | 256 source + 256 destination partitions |
+| Exact WCC | Full graph, official exact match |
+| Exact SCC | Full graph, official exact match |
+| Pair co-occurrence | Exact complete local distribution |
+| Clique projection | 245,754,884 weighted edges |
+| Full s-line | `s=1..345`, official exact match |
+| Independent Leiden | 1,997,488 nodes, 245,669,033 edges |
 
-These measurements are not guarantees. Runtime depends on disk performance,
-the operating-system cache, and other system workloads.
+## Safety Rules
 
-## Reproduction Levels
+- Do not load the complete follow graph with pandas or NetworkX.
+- Keep `work/` on a drive with substantial free space.
+- Run only one DuckDB writer at a time.
+- Preserve completed checkpoint directories.
+- Do not use `starterpack-leiden --python-backend` on a 32 GB machine.
+- Use `--maximum-new-batches` or the SCC bucket limit for bounded probes.
+- Keep raw data, databases, indexes, native binaries, and checkpoints out of
+  Git.
 
-### Exact Local Computations
+## Checkpointed Commands
 
-- node statistics;
-- full follow degree and temporal distributions;
-- standard deviations of follow dates;
-- impossible timestamp validation;
-- basic starter-pack statistics;
-- exact starter-pack hypergraph components;
-- Kendall tau rank comparison;
-- exact pair co-occurrence for an explicitly bounded pack-size range.
-
-### Filtered Local Computations
-
-- s-line statistics after removing hyper-hub members;
-- pair co-occurrence with an explicit `--max-pack-size`.
-
-The filter is included in every output filename to prevent filtered results
-from being confused with unfiltered results.
-
-### Official Reference Results
-
-The following full computations are not practical on a 32 GB workstation:
-
-- strongly and weakly connected components of the 2.4-billion-edge graph;
-- the full clique projection and Leiden clustering;
-- unfiltered s-line construction;
-- loading the full graph into igraph or graph-tool.
-
-The `reference-import` command imports the authors' official outputs with a
-`reference_` prefix. These values are never reported as locally recomputed
-results.
-
-## Expensive Hypergraph Commands
+Exact SCC:
 
 ```cmd
-python -m blue_start.cli pair-cooccurrence --max-pack-size 50
-python -m blue_start.cli s-line --s-max 5 --max-member-degree 5000
-python -m blue_start.cli starterpack-kcore
+python -m blue_start.cli follow-scc
 ```
 
-The k-core implementation is exact, but its Python adjacency structures can
-consume several gigabytes of memory. Run it separately from VS Code, browsers,
-and other memory-intensive applications.
+Exact unrestricted s-line:
+
+```cmd
+python -m blue_start.cli s-line-full
+python -m blue_start.cli s-line-full --maximum-new-batches 1
+```
+
+Safe completed Leiden import:
+
+```cmd
+python -m blue_start.cli starterpack-leiden
+```
 
 ## Cache Behavior
 
-The `following` command reuses existing degree and volume tables. Force a
-recomputation with:
+Completed outputs are reused when possible. Rebuild flags intentionally remove
+only the command's validated work directory:
 
 ```cmd
 python -m blue_start.cli following --force
+python -m blue_start.cli follow-scc --rebuild
+python -m blue_start.cli s-line-full --rebuild
 ```
 
-Deleting `work/blue_start.duckdb` removes all cached computations.
+Deleting `work/blue_start.duckdb` removes database tables but not every
+partitioned external index or algorithm checkpoint.
+
+## GitHub Packaging
+
+Portable summaries, figures, source code, tests, and reasonably sized Parquet
+outputs are committed. The following remain local:
+
+- raw datasets;
+- DuckDB databases and spill files;
+- full per-node follow degree/time tables over GitHub's size limit;
+- the 20.28 GiB follow indexes;
+- clique-projection partitions;
+- SCC and s-line checkpoints;
+- native build products.
 

@@ -1,0 +1,24 @@
+{
+  "task": "starterpack_configuration_entropy_independent",
+  "seconds": 10.695407599996543,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\starterpack_configuration_entropy_independent.parquet"
+  ],
+  "summary": {
+    "independently_recomputed": true,
+    "paper_compatible_random_edge_shuffle": true,
+    "community_labels_source": "results.starterpack_leiden_labels_local",
+    "label_source": "independent",
+    "labeled_node_count": 1997488,
+    "community_count": 740,
+    "pack_count": 365157,
+    "incidence_count": 12697223,
+    "swaps_per_edge": 10,
+    "shuffle_attempts": 3651570,
+    "seed": 0,
+    "node_degrees_preserved": true,
+    "edge_sizes_preserved": true,
+    "mean_normalized_entropy": 0.5637219593833033,
+    "zero_entropy_fraction": 0.0002765933557346566
+  }
+}

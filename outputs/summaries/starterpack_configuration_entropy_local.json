@@ -1,0 +1,23 @@
+{
+  "task": "starterpack_configuration_entropy_local",
+  "seconds": 11.401809800000592,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\starterpack_configuration_entropy_local.parquet"
+  ],
+  "summary": {
+    "independently_recomputed": true,
+    "paper_compatible_random_edge_shuffle": true,
+    "community_labels_source": "E:\\final_proj\\reference\\upstream-a-blue-start\\data\\node_labels.json",
+    "labeled_node_count": 1997488,
+    "community_count": 503,
+    "pack_count": 365157,
+    "incidence_count": 12697223,
+    "swaps_per_edge": 10,
+    "shuffle_attempts": 3651570,
+    "seed": 0,
+    "node_degrees_preserved": true,
+    "edge_sizes_preserved": true,
+    "mean_normalized_entropy": 0.5757225478252396,
+    "zero_entropy_fraction": 0.00020265255766697613
+  }
+}

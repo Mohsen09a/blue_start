@@ -1,0 +1,23 @@
+{
+  "task": "starterpack_weighted_clique_projection",
+  "seconds": 65.9761209999997,
+  "outputs": [
+    "E:\\final_proj\\work\\clique_projection\\partitions_256",
+    "E:\\final_proj\\outputs\\parquet\\starterpack_projection_node_stats_local.parquet",
+    "E:\\final_proj\\outputs\\parquet\\starterpack_projection_degree_distribution_local.parquet"
+  ],
+  "summary": {
+    "paper_compatible": true,
+    "disk_backed": true,
+    "projection_directory": "E:\\final_proj\\work\\clique_projection\\partitions_256",
+    "partitions": 256,
+    "projection_file_count": 256,
+    "projection_file_bytes": 1789588433,
+    "edge_count": 245754884,
+    "projected_node_count": 2003530,
+    "maximum_degree": 912507,
+    "maximum_strength": 5269118,
+    "maximum_cooccurrence": 32696,
+    "temporary_pair_rows_removed": true
+  }
+}

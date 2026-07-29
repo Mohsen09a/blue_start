@@ -1,0 +1,21 @@
+{
+  "task": "follow_scc_exact",
+  "seconds": 3060.764390199998,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\follow_scc_distribution_local.parquet",
+    "E:\\final_proj\\work\\follow_scc_exact"
+  ],
+  "summary": {
+    "complete": true,
+    "exact": true,
+    "disk_backed_csr": true,
+    "node_count": 39650447,
+    "active_nodes": 36447725,
+    "edge_count": 2416311437,
+    "component_count": 15883064,
+    "largest_component": 20495220,
+    "official_distribution_differing_rows": 0,
+    "official_distribution_exact_match": true,
+    "work_directory": "E:\\final_proj\\work\\follow_scc_exact"
+  }
+}

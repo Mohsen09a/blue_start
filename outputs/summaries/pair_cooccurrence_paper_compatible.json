@@ -1,0 +1,27 @@
+{
+  "task": "pair_cooccurrence_paper_compatible",
+  "seconds": 13.108094199998959,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\pair_cooccurrence_paper_compatible.parquet"
+  ],
+  "summary": {
+    "paper_compatible": true,
+    "exact_for_all_local_packs": true,
+    "maximum_exact_pack_size": 4069,
+    "sample_size_for_large_packs": 1000,
+    "seed": 0,
+    "partitions": 256,
+    "nonempty_pack_count": 365611,
+    "unique_membership_count": 12703609,
+    "maximum_unique_pack_size": 4069,
+    "exact_pair_occurrence_rows": 415832406,
+    "large_pack_count": 0,
+    "large_pack_total_pairs": 0,
+    "sampled_pair_rows": 0,
+    "distinct_pairs": 245754884,
+    "maximum_cooccurrence": 32696,
+    "temporary_pair_file_count": 256,
+    "temporary_pair_file_bytes": 2603113196,
+    "temporary_pair_rows_removed": true
+  }
+}

@@ -1,242 +1,134 @@
 # Implementation Status
 
-## Fully Implemented and Executed
+## Overall Result
 
-The following tasks were implemented and run successfully on the complete
-dataset.
+All major computational analyses reported in the paper have been implemented
+and executed using the released dataset on a 32 GB workstation.
 
-### Data Management
+The only optional exact-reproduction difference is the Leiden backend. The
+full independent partition was computed locally with C/igraph, while the paper
+used Python `leidenalg`. The original data-collection crawler and anonymization
+pipeline are outside this repository; analysis begins with the published data.
 
-- Automatic detection of all dataset files
-- Support for Windows duplicate filenames such as `(1)`
-- Schema and sample-record validation
-- DuckDB configuration for a 32 GB workstation
-- `18GB` DuckDB memory limit
-- Eight processing threads
-- Disk spilling under `work/duckdb_tmp`
-- External Parquet view for the follow network
-- Parquet and JSON result exports
-- Cached intermediate results
+## Full Dataset Foundation
 
-### Node Dataset
+- 39,650,447 accounts processed
+- 365,842 Starter Packs processed
+- 12,703,609 deduplicated hypergraph incidences
+- 2,416,311,437 directed follow edges processed
+- DuckDB configured with an 18 GB memory limit and eight threads
+- large follow and projection relations kept on disk
+- Parquet, JSON, PNG, and PDF outputs generated
 
-All `39,650,447` accounts were processed:
+## Completed Paper Analyses
 
-- Total account count
-- Active, inactive, and unknown counts
-- Account-status distribution
-- Account-creation volume by date
-- Moderation and deactivation statistics
+| Analysis | Local status | Validation |
+|---|---|---|
+| Node statistics | Complete | Full dataset |
+| Follow volume and degrees | Complete | 2.416 billion edges |
+| Follow timestamp checks | Complete | Full dataset |
+| Starter Pack statistics | Complete | Full dataset |
+| Hypergraph components | Exact | Largest component 1,997,488 |
+| Follow WCC | Exact | Official distribution exact match |
+| Follow SCC | Exact | Official distribution exact match |
+| Hypergraph k-core | Exact | Maximum core and `core >= 1000` match |
+| Pair co-occurrence | Exact locally | Official distribution exact match |
+| Weighted clique projection | Complete | 245,754,884 edges |
+| Unrestricted s-line | Exact | All 345 official rows match |
+| Independent Leiden | Complete | Full 245,669,033-edge giant graph |
+| Edge entropy | Complete | Official and independent labels |
+| Configuration model | Complete | Degrees and edge sizes preserved |
+| Kendall tau | Complete | Top-one-million comparison |
+| Research figures | Complete | PNG and PDF |
 
-### Starter-Pack Dataset
+## Exact Full s-Line
 
-All `365,842` starter packs and `12,812,086` memberships were processed:
-
-- Pack-size distribution
-- Hypergraph node-degree distribution
-- Packs created per user
-- Pack creation volume
-- Creator account age at pack creation
-- Invalid temporal relationships
-- Exact hypergraph connected components
-
-Exact component results:
-
-```text
-Components:                 409
-Largest component:    1,997,488
-Hypergraph nodes:     2,003,536
-```
-
-### Complete Follow Network
-
-All `2,416,311,437` follow edges were processed:
-
-- Daily follow volume
-- Complete in-degree calculation
-- Complete out-degree calculation
-- Degree distributions
-- Number of nodes appearing in the follow network
-- Per-node incoming follow-date standard deviation
-- Per-node outgoing follow-date standard deviation
-- Impossible timestamp validation
-
-Results:
+The checkpointed native implementation computes thresholds `s=1..345`
+without filtering or sampling.
 
 ```text
-Follow-network nodes:       36,447,725
-Maximum in-degree:          28,062,787
-Maximum out-degree:            844,408
-Impossible timestamps:        147,655
+Active packs at s=1:             365,228
+Distinct pack pairs at s=1: 19,559,507,901
+Runtime:                          39.83 seconds
+Checkpoint storage:              about 189 MB
+Official differing rows:                  0
 ```
 
-### Ranking Comparison
+The 19.6-billion-edge line graph is not materialized. Compact CSR arrays,
+reusable counters, and overlap histograms produce the exact summary safely.
 
-- Complete starter-pack degrees
-- Complete follow-network degrees
-- Top-one-million node selection
-- Kendall tau-b comparison
-- Logarithmic binning of rank correlations
-- Figure generation
+## Full Independent Leiden
 
-### Figures
-
-Generated in PNG and PDF formats:
-
-- Node creation and activity
-- Follow-network statistics
-- Starter-pack basic statistics
-- Starter-pack temporal statistics
-- Mesoscale starter-pack statistics
-- Kendall tau rank comparison
-
-### Automation and Packaging
-
-- Complete command-line interface
-- Smoke-test script
-- Full workstation-safe pipeline script
-- Setup script
-- Automated tests
-- GitHub-ready repository
-- English documentation
-- Git configuration and large-file exclusions
-
-## Implemented but Not Executed at Full Scale
-
-### Exact Hypergraph k-Core
-
-The exact algorithm is implemented:
-
-```cmd
-python -m blue_start.cli starterpack-kcore
-```
-
-It was not run locally because Python adjacency dictionaries and sets may
-consume several gigabytes of memory. The official k-core distribution was
-imported instead.
-
-### Pair Co-occurrence
-
-The DuckDB implementation is complete and supports an explicit pack-size
-limit:
-
-```cmd
-python -m blue_start.cli pair-cooccurrence --max-pack-size 50
-```
-
-It was tested successfully for packs with at most ten members. An unfiltered
-full execution was not performed because it may generate billions of distinct
-user pairs.
-
-### Filtered s-Line Calculation
-
-The implementation is complete:
-
-```cmd
-python -m blue_start.cli s-line --s-max 5 --max-member-degree 5000
-```
-
-It was tested successfully with a conservative member-degree limit. The result
-is exact for the filtered hypergraph, but not for the original unfiltered
-hypergraph.
-
-## Not Recomputed Locally
-
-### Full Strongly Connected Components
-
-- Not recomputed from the complete 2.4-billion-edge network
-- Official SCC-size results were imported
-- Largest official SCC: `20,495,220`
-
-### Full Weakly Connected Components
-
-- Not recomputed locally
-- Official WCC-size results were imported
-- Largest official WCC: `36,433,172`
-
-### Full Clique Projection
-
-- Not constructed locally
-- The projected graph would be extremely large and dense
-
-### Full Leiden Community Detection
-
-- Not recomputed locally
-- Official community labels were imported
-- Official number of communities: `503`
-
-### Full Edge-Entropy Pipeline
-
-- Edge entropy was not recomputed from a new local Leiden partition
-- Official node labels and entropy results were imported
-- The imported entropy values were used for plotting
-
-### Configuration-Model Hypergraph Randomization
-
-- The ten-times-per-edge random shuffle from the original notebook was not run
-- It requires large mutable hypergraph structures and substantial runtime
-
-### Full Unfiltered s-Line Graph
-
-- Not recomputed locally
-- Official s-line counts were imported
-- A filtered local implementation is available
-
-### Full Exact Unfiltered Pair Co-occurrence
-
-- Not executed locally
-- Official upstream distribution was imported
-- The original upstream method also approximates pairs in very large packs
-
-### Full Graph Objects
-
-The follow network was not loaded into:
-
-- NetworkX
-- igraph
-- graph-tool
-
-The paper reports approximately `310GB` RAM for graph-tool and `460GB` for
-igraph. DuckDB was used instead for all relational and aggregation tasks.
-
-## Imported Official Results
-
-The following official upstream outputs are stored with a `reference_` prefix:
-
-- SCC-size distribution
-- WCC-size distribution
-- Full s-line counts
-- Hypergraph k-core distribution
-- Pair-co-occurrence distribution
-- Leiden community labels
-- Edge-entropy results
-
-These values are explicitly marked as official reference results and are not
-presented as locally recomputed outputs.
-
-## Overall Completion
-
-For reproduction and data engineering:
+The complete unweighted giant projection was clustered locally:
 
 ```text
-Locally recomputed coverage: approximately 85%
-Coverage including official reference outputs: approximately 95%
+Nodes:                         1,997,488
+Edges:                       245,669,033
+Independent communities:              740
+Modularity:                      0.661649
+NMI with published labels:       0.873341
+Adjusted Rand index:             0.843200
+Observed process working set: about 8.2 GB
 ```
 
-For the complete final thesis project:
+The paper reports 503 communities using a different backend. The exact
+64-bit Python construction reached 95.9% total system RAM before Leiden
+started, so the safe full run uses 32-bit C/igraph with the same objective and
+main parameters.
+
+## Exact Follow Components
+
+Both complete calculations use disk-backed compact CSR/checkpoint techniques:
 
 ```text
-Approximately 35-40%
+Largest WCC: 36,433,172
+Largest SCC: 20,495,220
 ```
 
-The remaining thesis work is the novel research stage:
+Both component-size distributions exactly match the official results.
 
-- Final research-question selection
-- Starter-pack/follow causal or predictive analysis
-- Feature engineering
-- Statistical modeling or link prediction
-- Evaluation and baselines
-- Interpretation of results
-- Thesis writing
-- Final presentation preparation
+## Entropy and Configuration Model
+
+Using the independent local Leiden labels:
+
+```text
+Fully labeled packs:                 365,157
+Observed mean normalized entropy:   0.138833
+Randomized mean normalized entropy: 0.563722
+Shuffle attempts:                   3,651,570
+```
+
+Every node degree and every hyperedge size is preserved.
+
+The earlier official-label recomputation remains available separately and
+reproduces the paper's means of approximately `0.160` observed and `0.576`
+randomized.
+
+## Follow Query Indexes
+
+The full follow relation has disk-partitioned source and destination indexes:
+
+- outgoing follows;
+- incoming followers;
+- edge-existence checks;
+- mutual follows;
+- common follows.
+
+The indexes occupy approximately 20.28 GiB locally and are excluded from Git.
+
+## Tests
+
+Thirteen automated tests pass. The native s-line kernel also passes a separate
+brute-force toy-graph validation.
+
+## Remaining Work
+
+No major paper analysis remains unimplemented.
+
+Optional or thesis-extension work includes:
+
+- exact Leiden rerun with the paper's backend on an HPC system;
+- reproducing the external data collection and anonymization pipeline;
+- novel link-prediction, temporal, or causal analysis;
+- final thesis writing and presentation preparation.
 

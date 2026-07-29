@@ -1,0 +1,17 @@
+{
+  "task": "starterpack_kcore_local",
+  "seconds": 5.1640527999998085,
+  "outputs": [
+    "E:\\final_proj\\outputs\\parquet\\starterpack_kcore_local.parquet",
+    "E:\\final_proj\\outputs\\parquet\\starterpack_kcore_distribution_local.parquet"
+  ],
+  "summary": {
+    "exact": true,
+    "node_count": 2003536,
+    "pack_count": 365842,
+    "incidence_count": 12703609,
+    "maximum_core": 34297,
+    "nodes_with_core_at_least_1000": 772,
+    "distribution_rows": 1597
+  }
+}
