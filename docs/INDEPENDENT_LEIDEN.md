@@ -61,6 +61,16 @@ not expected to be identical.
 The agreement is strong, but this result must not be described as an exact
 reproduction of the paper's community IDs.
 
+## Subsequent exact-backend result
+
+The original Python `igraph`/`leidenalg` implementation was subsequently run
+with a fixed 120 GiB Windows page file. It completed in 51.44 minutes and
+matched every published node assignment exactly. See
+[Exact Original-Backend Leiden Reproduction](ORIGINAL_BACKEND_LEIDEN.md).
+
+The independent 32-bit C/igraph result documented here remains a separate,
+lower-memory partition and is intentionally preserved.
+
 ## Running and reusing the result
 
 Validate and import the completed native membership:

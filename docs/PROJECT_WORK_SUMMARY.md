@@ -579,9 +579,10 @@ The project now supports:
 - the full disk-backed weighted clique projection;
 - exact unrestricted s-line counts for all 345 thresholds.
 
-No major paper analysis remains unimplemented. One optional exact-reproduction
-task remains: rerunning Leiden with the
-paper's exact Python `leidenalg` backend. The full independent C/igraph result
-is complete, but backend differences produce 740 communities instead of the
-paper's 503. The exact Python backend was measured as unsafe on this 32 GB
-machine.
+No major paper analysis or exact-reproduction task remains unimplemented.
+The original Python `igraph`/`leidenalg` clustering was subsequently completed
+with a fixed 120 GiB Windows page file. It used up to about 47.05 GiB of private
+commit, completed the complete original pipeline in 51.44 minutes, produced
+503 communities, and matched every published node assignment exactly. The
+separate 740-community C/igraph result remains available as an independent,
+lower-memory partition.

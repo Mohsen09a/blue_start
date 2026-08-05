@@ -1,0 +1,32 @@
+{
+  "complete": true,
+  "original_upstream_algorithm": true,
+  "algorithm_modified": false,
+  "only_input_output_paths_adapted": true,
+  "backend": "Python igraph + leidenalg",
+  "igraph_version": "0.11.9",
+  "leidenalg_version": "0.10.2",
+  "xgi_version": "0.10.2",
+  "seed": 0,
+  "node_count": 1997488,
+  "community_count": 503,
+  "largest_community": 434207,
+  "top_five_community_sizes": [
+    434207,
+    333148,
+    156110,
+    126567,
+    98434
+  ],
+  "official_node_set_exact_match": true,
+  "official_assignments_exact_match": true,
+  "elapsed_seconds": 3086.674002,
+  "elapsed_minutes": 51.4445667,
+  "observed_peak_private_commit_gib": 47.05,
+  "observed_minimum_available_physical_gib": 0.12,
+  "configured_commit_limit_gib": 155.22,
+  "page_file_e_gib": 120,
+  "labels_json": "E:\\final_proj\\reference\\upstream-a-blue-start\\original_swap_run\\output\\node_labels.json",
+  "labels_parquet": "E:\\final_proj\\outputs\\parquet\\starterpack_leiden_labels_paper_backend_local.parquet",
+  "community_sizes_parquet": "E:\\final_proj\\outputs\\parquet\\starterpack_leiden_community_sizes_paper_backend_local.parquet"
+}

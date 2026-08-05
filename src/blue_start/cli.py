@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import date
 
 from .pipeline import (
     analyze_following,
@@ -44,6 +45,10 @@ from .leiden import (
     import_native_leiden_result,
 )
 from .validation import inventory, validate_datasets
+from new_research.starterpack_growth_effect.code.analysis import (
+    StarterPackGrowthConfig,
+    run_starterpack_growth_study,
+)
 
 
 def _human_size(value: int | None) -> str:
@@ -230,6 +235,22 @@ def build_parser() -> argparse.ArgumentParser:
     )
     kendall.add_argument("--follow-profile", default="full")
     kendall.add_argument("--top-k", type=int, default=1_000_000)
+    growth = subparsers.add_parser(
+        "starterpack-growth-study",
+        help="estimate user growth after first Starter Pack inclusion with matched controls",
+    )
+    growth.add_argument("--treatment-rows", type=int, default=100_000)
+    growth.add_argument("--controls-per-treatment", type=int, default=8)
+    growth.add_argument("--min-account-age-days", type=int, default=30)
+    growth.add_argument(
+        "--min-treatment-date", type=date.fromisoformat, default=date(2024, 6, 1)
+    )
+    growth.add_argument("--horizon-days", type=int, default=90)
+    growth.add_argument("--max-final-in-degree", type=int, default=100_000)
+    growth.add_argument("--max-final-out-degree", type=int, default=100_000)
+    growth.add_argument("--propensity-caliper", type=float, default=0.25)
+    growth.add_argument("--max-control-reuse", type=int, default=10)
+    growth.add_argument("--seed", type=int, default=15)
     subparsers.add_parser(
         "reference-import",
         help="import compact official results for independent validation",
@@ -356,6 +377,23 @@ def main(argv: list[str] | None = None) -> int:
             compute_kendall_tau(
                 follow_profile=args.follow_profile,
                 top_k=args.top_k,
+            )
+        )
+    if args.command == "starterpack-growth-study":
+        return _print_run_result(
+            run_starterpack_growth_study(
+                StarterPackGrowthConfig(
+                    treatment_rows=args.treatment_rows,
+                    controls_per_treatment=args.controls_per_treatment,
+                    min_account_age_days=args.min_account_age_days,
+                    min_treatment_date=args.min_treatment_date,
+                    horizon_days=args.horizon_days,
+                    max_final_in_degree=args.max_final_in_degree,
+                    max_final_out_degree=args.max_final_out_degree,
+                    propensity_caliper=args.propensity_caliper,
+                    max_control_reuse=args.max_control_reuse,
+                    seed=args.seed,
+                )
             )
         )
     if args.command == "reference-import":

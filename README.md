@@ -24,10 +24,11 @@ All major paper analyses have been implemented:
 - Kendall tau rank comparisons;
 - research figures and fast follow-query indexes.
 
-The unrestricted s-line output matches all 345 official rows exactly. The
-independent Leiden run is complete, but uses a memory-safe C/igraph backend
-instead of the paper's high-memory Python `leidenalg` backend; see
-[the Leiden documentation](docs/INDEPENDENT_LEIDEN.md).
+The unrestricted s-line output matches all 345 official rows exactly. Both the
+memory-safe independent C/igraph Leiden partition and the paper's exact Python
+`leidenalg` partition have been completed. The exact-backend run matched every
+published node assignment; see
+[the original-backend documentation](docs/ORIGINAL_BACKEND_LEIDEN.md).
 
 ## Installation on Windows
 
@@ -115,6 +116,7 @@ native checkpoints are intentionally excluded from Git.
 - [Exact SCC](docs/EXACT_SCC.md)
 - [Exact unrestricted s-line](docs/FULL_SLINE.md)
 - [Independent Leiden](docs/INDEPENDENT_LEIDEN.md)
+- [Exact original-backend Leiden](docs/ORIGINAL_BACKEND_LEIDEN.md)
 - [Pair co-occurrence](docs/PAIR_COOCCURRENCE.md)
 - [Clique projection](docs/CLIQUE_PROJECTION.md)
 - [Follow indexes](docs/FOLLOW_INDEX_GUIDE.md)

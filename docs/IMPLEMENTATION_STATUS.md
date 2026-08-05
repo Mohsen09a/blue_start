@@ -5,10 +5,11 @@
 All major computational analyses reported in the paper have been implemented
 and executed using the released dataset on a 32 GB workstation.
 
-The only optional exact-reproduction difference is the Leiden backend. The
-full independent partition was computed locally with C/igraph, while the paper
-used Python `leidenalg`. The original data-collection crawler and anonymization
-pipeline are outside this repository; analysis begins with the published data.
+Both the memory-safe independent C/igraph Leiden partition and the paper's
+exact Python `leidenalg` partition were computed locally. The original-backend
+result matches every published node assignment exactly. The original
+data-collection crawler and anonymization pipeline are outside this repository;
+analysis begins with the published data.
 
 ## Full Dataset Foundation
 
@@ -72,9 +73,11 @@ Observed process working set: about 8.2 GB
 ```
 
 The paper reports 503 communities using a different backend. The exact
-64-bit Python construction reached 95.9% total system RAM before Leiden
-started, so the safe full run uses 32-bit C/igraph with the same objective and
-main parameters.
+64-bit Python construction initially reached 95.9% total physical RAM before
+Leiden started. A later run with a fixed 120 GiB page file completed the
+original Python `leidenalg` pipeline in 51.44 minutes, used up to about
+47.05 GiB of private commit, produced 503 communities, and exactly matched all
+published assignments.
 
 ## Exact Follow Components
 
@@ -123,12 +126,10 @@ brute-force toy-graph validation.
 
 ## Remaining Work
 
-No major paper analysis remains unimplemented.
+No major paper analysis or exact reproduction remains unimplemented.
 
 Optional or thesis-extension work includes:
 
-- exact Leiden rerun with the paper's backend on an HPC system;
 - reproducing the external data collection and anonymization pipeline;
 - novel link-prediction, temporal, or causal analysis;
 - final thesis writing and presentation preparation.
-

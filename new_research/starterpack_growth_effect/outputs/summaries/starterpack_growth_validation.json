@@ -1,0 +1,127 @@
+{
+  "matched_pairs": 83914,
+  "maximum_control_reuse": 10,
+  "maximum_absolute_post_match_smd": 0.0259842418165164,
+  "checks": {
+    "summary_complete": true,
+    "cohort_count_matches_summary": true,
+    "unique_match_ids": true,
+    "no_self_matches": true,
+    "same_seven_day_time_block": true,
+    "controls_unexposed_through_day_90": true,
+    "outcomes_are_monotone": true,
+    "reuse_cap_respected": true,
+    "no_day_zero_in_event_study": true,
+    "post_match_balance_below_point_one": true,
+    "propensity_model_converged": true,
+    "cluster_robust_effect_intervals": true,
+    "all_effect_rows_use_full_matched_cohort": true,
+    "all_checks_passed": true
+  },
+  "subgroup_effects_90_days": [
+    {
+      "dimension": "packs_within_30_days",
+      "subgroup": "4+ packs",
+      "pairs": 6999,
+      "mean_difference": 1419.4274896413774,
+      "ci_low": 1337.9733476783792,
+      "ci_high": 1500.8816316043756
+    },
+    {
+      "dimension": "baseline_followers",
+      "subgroup": "1,000+",
+      "pairs": 516,
+      "mean_difference": 1183.1821705426357,
+      "ci_low": 843.79810106811,
+      "ci_high": 1522.5662400171614
+    },
+    {
+      "dimension": "first_pack_size",
+      "subgroup": "large (>150)",
+      "pairs": 4726,
+      "mean_difference": 535.8535759627592,
+      "ci_low": 482.47408330788494,
+      "ci_high": 589.2330686176335
+    },
+    {
+      "dimension": "baseline_followers",
+      "subgroup": "100-999",
+      "pairs": 23260,
+      "mean_difference": 427.6266552020636,
+      "ci_low": 402.957363225192,
+      "ci_high": 452.2959471789352
+    },
+    {
+      "dimension": "first_pack_size",
+      "subgroup": "medium (51-150)",
+      "pairs": 26621,
+      "mean_difference": 356.88745727057585,
+      "ci_low": 337.75924669166193,
+      "ci_high": 376.0156678494898
+    },
+    {
+      "dimension": "packs_within_30_days",
+      "subgroup": "2-3 packs",
+      "pairs": 16397,
+      "mean_difference": 293.7008599133988,
+      "ci_low": 277.65624203407174,
+      "ci_high": 309.74547779272586
+    },
+    {
+      "dimension": "account_age",
+      "subgroup": "1-2 years",
+      "pairs": 33207,
+      "mean_difference": 257.271418676785,
+      "ci_low": 241.39689489686404,
+      "ci_high": 273.145942456706
+    },
+    {
+      "dimension": "account_age",
+      "subgroup": "91-365 days",
+      "pairs": 30087,
+      "mean_difference": 208.94053910326718,
+      "ci_low": 194.95019438307128,
+      "ci_high": 222.9308838234631
+    },
+    {
+      "dimension": "account_age",
+      "subgroup": "30-90 days",
+      "pairs": 20600,
+      "mean_difference": 200.96995145631067,
+      "ci_low": 181.18268359338884,
+      "ci_high": 220.7572193192325
+    },
+    {
+      "dimension": "baseline_followers",
+      "subgroup": "10-99",
+      "pairs": 45427,
+      "mean_difference": 155.21610495960553,
+      "ci_low": 146.8357494301701,
+      "ci_high": 163.59646048904096
+    },
+    {
+      "dimension": "first_pack_size",
+      "subgroup": "small (<=50)",
+      "pairs": 52567,
+      "mean_difference": 131.95500979702095,
+      "ci_low": 123.98519980183403,
+      "ci_high": 139.92481979220787
+    },
+    {
+      "dimension": "baseline_followers",
+      "subgroup": "0-9",
+      "pairs": 14711,
+      "mean_difference": 92.55006457752702,
+      "ci_low": 80.96000919540798,
+      "ci_high": 104.14011995964607
+    },
+    {
+      "dimension": "packs_within_30_days",
+      "subgroup": "1 pack",
+      "pairs": 60518,
+      "mean_difference": 69.71872831223769,
+      "ci_low": 66.15649465049857,
+      "ci_high": 73.2809619739768
+    }
+  ]
+}

@@ -52,7 +52,9 @@ python -m blue_start.cli doctor
 - Keep `work/` on a drive with substantial free space.
 - Run only one DuckDB writer at a time.
 - Preserve completed checkpoint directories.
-- Do not use `starterpack-leiden --python-backend` on a 32 GB machine.
+- Prefer the portable or 32-bit Leiden result on a 32 GB machine. The original
+  Python backend requires an intentionally configured large page file and is
+  documented as a separate experiment.
 - Use `--maximum-new-batches` or the SCC bucket limit for bounded probes.
 - Keep raw data, databases, indexes, native binaries, and checkpoints out of
   Git.
@@ -104,4 +106,3 @@ outputs are committed. The following remain local:
 - clique-projection partitions;
 - SCC and s-line checkpoints;
 - native build products.
-

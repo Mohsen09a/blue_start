@@ -1,0 +1,379 @@
+{
+  "task": "starterpack_growth_effect",
+  "seconds": 216.94744289999653,
+  "outputs": [
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\parquet\\starterpack_growth_matched_cohort.parquet",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\parquet\\starterpack_growth_effects.parquet",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\parquet\\starterpack_growth_balance.parquet",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\parquet\\starterpack_growth_dynamics.parquet",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\parquet\\starterpack_growth_subgroups.parquet",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\parquet\\starterpack_growth_network_quality.parquet",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_effect.png",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_effect.pdf",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_robustness.png",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_robustness.pdf",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_subgroups.png",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_subgroups.pdf",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_network_quality.png",
+    "E:\\final_proj\\new_research\\starterpack_growth_effect\\outputs\\figures\\starterpack_growth_network_quality.pdf"
+  ],
+  "summary": {
+    "complete": true,
+    "method": "staggered first-exposure cohort with risk-set propensity matching",
+    "causal_claim": false,
+    "config": {
+      "treatment_rows": 100000,
+      "controls_per_treatment": 8,
+      "min_account_age_days": 30,
+      "min_treatment_date": "2024-06-01",
+      "horizon_days": 90,
+      "max_final_in_degree": 100000,
+      "max_final_out_degree": 100000,
+      "propensity_caliper": 0.25,
+      "max_control_reuse": 10,
+      "seed": 15
+    },
+    "date_coverage": {
+      "valid_follow_start": "2022-11-17",
+      "follow_data_end": "2025-10-18",
+      "latest_complete_treatment_date": "2025-07-20 00:00:00",
+      "treatment_day_outcomes_excluded": true
+    },
+    "definitions": {
+      "treatment": "first date a user was observable in any Starter Pack",
+      "control": "user assigned a comparable index date who remained outside all Starter Packs through day 90",
+      "primary_outcome": "surviving incoming follow edges dated 1-90 days after index",
+      "matching": "nearest propensity score within the same fixed seven-day index-date block and account-age band, with capped replacement",
+      "difference_in_differences": "change from prior 90-day follower count relative to the matched control change"
+    },
+    "population_counts": {
+      "all_unique_pack_members": 2003536,
+      "eligible_treated_users": 1084011,
+      "sampled_treated_users": 100000,
+      "eligible_control_observations": 314199,
+      "matched_pairs": 83914
+    },
+    "propensity_model": {
+      "features": [
+        "log1p_pre_in_degree",
+        "log1p_pre_out_degree",
+        "log1p_pre_followers_30",
+        "log1p_pre_following_30",
+        "log1p_account_age_days"
+      ],
+      "converged": true,
+      "iterations": 14,
+      "negative_log_likelihood": 122650.24740556926,
+      "coefficients": [
+        -1.7135159149452959,
+        0.8890571808785845,
+        -0.10549846846923568,
+        1.2841949940583355,
+        0.11771116108133432,
+        0.44522637489093314
+      ],
+      "feature_means": [
+        2.013338633418619,
+        2.495141843283765,
+        0.8434912433771531,
+        0.75939853502751,
+        5.01351468526136
+      ],
+      "feature_standard_deviations": [
+        1.867245064142685,
+        1.7762174335473444,
+        1.4039441006186182,
+        1.4619024893465988,
+        0.8321027988340022
+      ]
+    },
+    "matching": {
+      "caliper_logit_distance": 0.5487188805781168,
+      "eligible_treated": 100000,
+      "matched_treated": 83914,
+      "match_rate": 0.83914,
+      "unique_controls": 35787,
+      "maximum_control_reuse": 10,
+      "mean_logit_distance": 0.033623910591297865,
+      "maximum_logit_distance": 0.5486966985403221
+    },
+    "balance": [
+      {
+        "variable": "log1p_pre_in_degree",
+        "smd_before": 1.7772494281429358,
+        "smd_after": -0.019340480970427936
+      },
+      {
+        "variable": "log1p_pre_out_degree",
+        "smd_before": 1.1452420656015745,
+        "smd_after": -0.021798651601715173
+      },
+      {
+        "variable": "log1p_pre_followers_30",
+        "smd_before": 1.731028345179125,
+        "smd_after": 0.0259842418165164
+      },
+      {
+        "variable": "log1p_pre_following_30",
+        "smd_before": 1.0783797473771526,
+        "smd_after": -0.014650819043454236
+      },
+      {
+        "variable": "log1p_account_age_days",
+        "smd_before": 0.5920308895928937,
+        "smd_after": -0.013010447240005595
+      }
+    ],
+    "effects": [
+      {
+        "outcome": "new_followers",
+        "horizon_days": 7,
+        "estimand": "matched post-period mean difference",
+        "pairs": 83914,
+        "treated_mean": 65.3865981838549,
+        "control_mean": 4.758872178659104,
+        "mean_difference": 60.6277260051958,
+        "ci_low": 58.13436690781338,
+        "ci_high": 63.12108510257821,
+        "standard_error": 1.2721453644300191,
+        "mean_ratio": 13.739935793417072,
+        "treated_median": 7.0,
+        "control_median": 1.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_followers_winsorized_p99",
+        "horizon_days": 7,
+        "estimand": "matched mean difference; values capped at 590",
+        "pairs": 83914,
+        "treated_mean": 48.40863264771075,
+        "control_mean": 4.754915747074386,
+        "mean_difference": 43.65371690063637,
+        "ci_low": 42.563843124638375,
+        "ci_high": 44.74359067663436,
+        "standard_error": 0.5560682668634638,
+        "mean_ratio": 10.180755080149572,
+        "treated_median": 7.0,
+        "control_median": 1.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "any_new_follower",
+        "horizon_days": 7,
+        "estimand": "matched probability difference",
+        "pairs": 83914,
+        "treated_mean": 0.8076244726744047,
+        "control_mean": 0.5597993183497391,
+        "mean_difference": 0.24782515432466573,
+        "ci_low": 0.24139326866384458,
+        "ci_high": 0.2542570399854869,
+        "standard_error": 0.003281634617551662,
+        "mean_ratio": 1.4427035657264502,
+        "treated_median": 1.0,
+        "control_median": 1.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_followers",
+        "horizon_days": 30,
+        "estimand": "matched post-period mean difference",
+        "pairs": 83914,
+        "treated_mean": 146.38342827180207,
+        "control_mean": 14.938186714970088,
+        "mean_difference": 131.445241556832,
+        "ci_low": 125.80272847280258,
+        "ci_high": 137.08775464086142,
+        "standard_error": 2.878886106345242,
+        "mean_ratio": 9.799276917934494,
+        "treated_median": 20.0,
+        "control_median": 4.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_followers_winsorized_p99",
+        "horizon_days": 30,
+        "estimand": "matched mean difference; values capped at 1322",
+        "pairs": 83914,
+        "treated_mean": 111.91393569606979,
+        "control_mean": 14.938186714970088,
+        "mean_difference": 96.9757489810997,
+        "ci_low": 94.52307598489898,
+        "ci_high": 99.42842197730042,
+        "standard_error": 1.2513867680973134,
+        "mean_ratio": 7.4918019055095115,
+        "treated_median": 20.0,
+        "control_median": 4.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "any_new_follower",
+        "horizon_days": 30,
+        "estimand": "matched probability difference",
+        "pairs": 83914,
+        "treated_mean": 0.9084896441594966,
+        "control_mean": 0.7367304621398099,
+        "mean_difference": 0.17175918201968682,
+        "ci_low": 0.16682617298415428,
+        "ci_high": 0.17669219105521936,
+        "standard_error": 0.002516887593059606,
+        "mean_ratio": 1.233137070945618,
+        "treated_median": 1.0,
+        "control_median": 1.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_followers",
+        "horizon_days": 90,
+        "estimand": "matched post-period mean difference",
+        "pairs": 83914,
+        "treated_mean": 258.5248587839931,
+        "control_mean": 32.464558953214,
+        "mean_difference": 226.06029983077914,
+        "ci_low": 216.6611749386032,
+        "ci_high": 235.45942472295508,
+        "standard_error": 4.795560003303642,
+        "mean_ratio": 7.963294962872092,
+        "treated_median": 41.0,
+        "control_median": 9.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_followers_winsorized_p99",
+        "horizon_days": 90,
+        "estimand": "matched mean difference; values capped at 2209.73",
+        "pairs": 83914,
+        "treated_mean": 198.49975772815046,
+        "control_mean": 32.464558953214,
+        "mean_difference": 166.03519877493645,
+        "ci_low": 161.90377804645593,
+        "ci_high": 170.16661950341697,
+        "standard_error": 2.1079064518882213,
+        "mean_ratio": 6.114352516361505,
+        "treated_median": 41.0,
+        "control_median": 9.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "any_new_follower",
+        "horizon_days": 90,
+        "estimand": "matched probability difference",
+        "pairs": 83914,
+        "treated_mean": 0.9507829444431204,
+        "control_mean": 0.816848201730343,
+        "mean_difference": 0.13393474271277736,
+        "ci_low": 0.12986876041685969,
+        "ci_high": 0.13800072500869504,
+        "standard_error": 0.002074518882994597,
+        "mean_ratio": 1.1639652782843388,
+        "treated_median": 1.0,
+        "control_median": 1.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_following",
+        "horizon_days": 7,
+        "estimand": "matched post-period mean difference",
+        "pairs": 83914,
+        "treated_mean": 41.2864956979765,
+        "control_mean": 8.467097266248778,
+        "mean_difference": 32.81939843172772,
+        "ci_low": 30.894771671167845,
+        "ci_high": 34.744025192287594,
+        "standard_error": 0.9819704727949528,
+        "mean_ratio": 4.876109769348128,
+        "treated_median": 1.0,
+        "control_median": 0.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_following",
+        "horizon_days": 30,
+        "estimand": "matched post-period mean difference",
+        "pairs": 83914,
+        "treated_mean": 91.67970779607694,
+        "control_mean": 24.850370617537003,
+        "mean_difference": 66.82933717853993,
+        "ci_low": 62.56039927480056,
+        "ci_high": 71.0982750822793,
+        "standard_error": 2.1780695652635513,
+        "mean_ratio": 3.6892692349376155,
+        "treated_median": 6.0,
+        "control_median": 1.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "new_following",
+        "horizon_days": 90,
+        "estimand": "matched post-period mean difference",
+        "pairs": 83914,
+        "treated_mean": 159.52783802464427,
+        "control_mean": 50.96053101985366,
+        "mean_difference": 108.56730700479062,
+        "ci_low": 100.73797696936613,
+        "ci_high": 116.39663704021511,
+        "standard_error": 3.9946295427779552,
+        "mean_ratio": 3.1304194605525986,
+        "treated_median": 16.0,
+        "control_median": 4.0,
+        "standard_error_method": "control-cluster-robust"
+      },
+      {
+        "outcome": "follower_change_from_prior_90_days",
+        "horizon_days": 90,
+        "estimand": "matched difference-in-differences",
+        "pairs": 83914,
+        "treated_mean": 209.183020711681,
+        "control_mean": -25.148759444192866,
+        "mean_difference": 234.33178015587387,
+        "ci_low": 224.77801720814685,
+        "ci_high": 243.8855431036009,
+        "standard_error": 4.874458420198475,
+        "mean_ratio": NaN,
+        "treated_median": 11.0,
+        "control_median": -5.0,
+        "standard_error_method": "control-cluster-robust"
+      }
+    ],
+    "network_quality": [
+      {
+        "role": "control",
+        "new_followers_90": 2723172,
+        "reciprocal_new_followers_90": 905281,
+        "reciprocal_share": 0.33243621776369614,
+        "community_known_pairs": 248125,
+        "same_final_community_share": 0.681136523929471
+      },
+      {
+        "role": "treated",
+        "new_followers_90": 21639254,
+        "reciprocal_new_followers_90": 5935145,
+        "reciprocal_share": 0.27427678421816204,
+        "community_known_pairs": 13151380,
+        "same_final_community_share": 0.6766505872387536
+      }
+    ],
+    "stage_seconds": {
+      "treatment_dates_and_sample": 18.264376999999513,
+      "risk_set_controls": 0.48579959999915445,
+      "incoming_follow_features": 22.266228599997703,
+      "outgoing_follow_features": 20.738467199997103,
+      "analysis_features": 0.6011035999981686,
+      "propensity_matching": 50.176963299993076,
+      "effects_balance_and_cohort": 0.6087387999941711,
+      "subgroup_effects": 0.3245731999995769,
+      "event_time_dynamics": 27.665048500006378,
+      "network_quality": 71.48246340000333,
+      "figures": 1.4465893999949913
+    },
+    "limitations": [
+      "This is an observational matched study and does not establish causality.",
+      "The follow file is a snapshot of surviving edges with creation dates, so removed follows are unobserved.",
+      "Treatment is first recorded pack inclusion; same-day ordering is unknown, so day zero is excluded.",
+      "The treated population is deterministically sampled for safe execution on a 32 GB computer.",
+      "Matching balances measured pre-treatment variables but cannot remove unmeasured selection into packs.",
+      "Final Leiden communities use later Starter Pack information and are therefore descriptive only, not matching covariates.",
+      "Pack type is represented by observable pack size and exposure multiplicity because topical labels are unavailable.",
+      "Control matching permits replacement up to the configured cap; reported intervals use control-cluster-robust standard errors."
+    ]
+  }
+}
