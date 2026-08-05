@@ -1,0 +1,13 @@
+[duckdb]
+memory_limit = "14GB"
+threads = 8
+max_temp_directory_size = "100GB"
+preserve_insertion_order = false
+enable_progress_bar = true
+
+[paths]
+database = "new_research/starterpack_growth_effect_full_population/work/full_population.duckdb"
+temp_directory = "new_research/starterpack_growth_effect_full_population/work/duckdb_tmp"
+parquet_outputs = "new_research/starterpack_growth_effect_full_population/outputs/parquet"
+summary_outputs = "new_research/starterpack_growth_effect_full_population/outputs/summaries"
+figure_outputs = "new_research/starterpack_growth_effect_full_population/outputs/figures"

@@ -1,0 +1,21 @@
+{
+  "matched_pairs": 910685,
+  "checks": {
+    "summary_complete": true,
+    "all_eligible_treated_analyzed": true,
+    "cohort_count_matches": true,
+    "unique_treated_per_pair": true,
+    "no_self_matches": true,
+    "same_week_block": true,
+    "controls_unexposed_90_days": true,
+    "outcomes_monotone": true,
+    "reuse_cap_respected": true,
+    "balance_below_point_one": true,
+    "effects_use_full_cohort": true,
+    "network_quality_complete": true,
+    "all_256_quality_checkpoints": true,
+    "six_parquet_outputs": true,
+    "eight_figure_outputs": true,
+    "all_checks_passed": true
+  }
+}
