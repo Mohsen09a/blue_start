@@ -1,0 +1,38 @@
+[study]
+minimum_date = "2024-06-01"
+history_end = "2025-01-31"
+train_start = "2025-02-08"
+train_end = "2025-05-31"
+validation_start = "2025-06-08"
+validation_end = "2025-07-31"
+test_start = "2025-08-08"
+test_end = "2025-09-30"
+seed = 2026
+
+[duckdb]
+memory_limit = "12GB"
+threads = 4
+max_temp_directory_size = "70GB"
+
+[embedding]
+dimensions = 32
+svd_iterations = 5
+clusters = 256
+cluster_batch_rows = 200000
+
+[candidates]
+follow_per_creator = 192
+comember_per_creator = 160
+cluster_popular_per_creator = 160
+global_popular_per_creator = 64
+maximum_per_pack = 512
+training_negatives_per_pack = 128
+
+[model]
+batch_rows = 200000
+epochs = 3
+alpha = 0.00001
+
+[evaluation]
+ks = [10, 50, 100]
+

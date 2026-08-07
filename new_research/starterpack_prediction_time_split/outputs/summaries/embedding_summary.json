@@ -1,0 +1,12 @@
+{
+  "method": "normalized hypergraph incidence TruncatedSVD",
+  "nodes": 1684915,
+  "hyperedges": 296957,
+  "memberships": 9762636,
+  "dimensions": 32,
+  "clusters": 256,
+  "explained_variance_ratio_sum": 0.0004901194479316473,
+  "sparse_matrix_mib": 80.91044616699219,
+  "embedding_file_mib": 205.67822265625,
+  "elapsed_seconds": 36.38947390002431
+}

@@ -1,0 +1,431 @@
+{
+  "study": "Time-Split Starter Pack Member Prediction",
+  "completed": true,
+  "task": "rank initial non-creator members of future Starter Packs from a fixed historical graph snapshot",
+  "configuration": {
+    "minimum_date": "2024-06-01",
+    "history_end": "2025-01-31",
+    "train_start": "2025-02-08",
+    "train_end": "2025-05-31",
+    "validation_start": "2025-06-08",
+    "validation_end": "2025-07-31",
+    "test_start": "2025-08-08",
+    "test_end": "2025-09-30",
+    "seed": 2026,
+    "memory_limit": "12GB",
+    "threads": 4,
+    "max_temp_directory_size": "70GB",
+    "dimensions": 32,
+    "svd_iterations": 5,
+    "clusters": 256,
+    "cluster_batch_rows": 200000,
+    "follow_per_creator": 192,
+    "comember_per_creator": 160,
+    "cluster_popular_per_creator": 160,
+    "global_popular_per_creator": 64,
+    "maximum_per_pack": 512,
+    "training_negatives_per_pack": 128,
+    "model_batch_rows": 200000,
+    "model_epochs": 3,
+    "model_alpha": 1e-05,
+    "evaluation_ks": [
+      10,
+      50,
+      100
+    ]
+  },
+  "data_availability": {
+    "used": [
+      "timestamped follows",
+      "timestamped Starter Packs",
+      "timestamped memberships",
+      "account creation dates"
+    ],
+    "unavailable": [
+      "posts",
+      "likes",
+      "reposts",
+      "replies",
+      "general interaction table"
+    ]
+  },
+  "leakage_controls": [
+    "hypergraph and follow features stop at 2025-01-31",
+    "training labels start after a seven-day gap on 2025-02-08",
+    "validation starts after a seven-day train gap on 2025-06-08",
+    "test starts after a seven-day validation gap on 2025-08-08",
+    "only members present on or before pack creation are positive labels",
+    "candidate retrieval never reads target-pack membership labels"
+  ],
+  "splits": [
+    {
+      "split": "train",
+      "packs": 41361,
+      "positive_members": 1462529,
+      "eligible_positive_members": 1221315,
+      "eligibility_rate": 0.8350706208218778,
+      "first_date": "2025-02-08",
+      "last_date": "2025-05-31"
+    },
+    {
+      "split": "validation",
+      "packs": 8193,
+      "positive_members": 363504,
+      "eligible_positive_members": 293550,
+      "eligibility_rate": 0.8075564505479995,
+      "first_date": "2025-06-08",
+      "last_date": "2025-07-31"
+    },
+    {
+      "split": "test",
+      "packs": 7689,
+      "positive_members": 309206,
+      "eligible_positive_members": 247971,
+      "eligibility_rate": 0.8019605052942052,
+      "first_date": "2025-08-08",
+      "last_date": "2025-09-30"
+    }
+  ],
+  "candidates": [
+    {
+      "split": "train",
+      "packs": 41361,
+      "candidates": 7651249,
+      "mean_candidates": 184.9870409322792,
+      "retrieved_positives": 471371,
+      "total_positives": 1462529,
+      "candidate_recall": 0.32229856638740156
+    },
+    {
+      "split": "validation",
+      "packs": 8193,
+      "candidates": 1596676,
+      "mean_candidates": 194.88294885878187,
+      "retrieved_positives": 79052,
+      "total_positives": 363504,
+      "candidate_recall": 0.21747215986619128
+    },
+    {
+      "split": "test",
+      "packs": 7689,
+      "candidates": 1410342,
+      "mean_candidates": 183.42333203277408,
+      "retrieved_positives": 67878,
+      "total_positives": 309206,
+      "candidate_recall": 0.21952355387670355
+    }
+  ],
+  "embedding": {
+    "method": "normalized hypergraph incidence TruncatedSVD",
+    "nodes": 1684915,
+    "hyperedges": 296957,
+    "memberships": 9762636,
+    "dimensions": 32,
+    "clusters": 256,
+    "explained_variance_ratio_sum": 0.0004901194479316473,
+    "sparse_matrix_mib": 80.91044616699219,
+    "embedding_file_mib": 205.67822265625,
+    "elapsed_seconds": 36.38947390002431
+  },
+  "model": {
+    "training_rows": 4063128,
+    "training_positives": 471371,
+    "training_prevalence": 0.11601185096802266,
+    "positive_sample_weight": 7.61980902516277,
+    "features": 79,
+    "epochs": 3,
+    "elapsed_seconds": 30.612476699985564
+  },
+  "evaluation": {
+    "metrics": [
+      {
+        "split": "validation",
+        "model": "popularity",
+        "packs": 8193,
+        "mrr": 0.4333918835108876,
+        "candidate_recall": 0.2724532578827636,
+        "hit_at_10": 0.4957890882460637,
+        "macro_recall_at_10": 0.043200882788477724,
+        "micro_recall_at_10": 0.02191997887230952,
+        "hit_at_50": 0.5615769559379958,
+        "macro_recall_at_50": 0.08139165371292145,
+        "micro_recall_at_50": 0.05026354593071878,
+        "hit_at_100": 0.7215916025875747,
+        "macro_recall_at_100": 0.2081723592265807,
+        "micro_recall_at_100": 0.1457673093005854
+      },
+      {
+        "split": "validation",
+        "model": "graph_heuristic",
+        "packs": 8193,
+        "mrr": 0.5190892296673868,
+        "candidate_recall": 0.2724532578827636,
+        "hit_at_10": 0.6398144757720005,
+        "macro_recall_at_10": 0.0756055714450592,
+        "micro_recall_at_10": 0.04366664465865575,
+        "hit_at_50": 0.7235444891980959,
+        "macro_recall_at_50": 0.14763426115977507,
+        "micro_recall_at_50": 0.10319281218363484,
+        "hit_at_100": 0.7669962162821922,
+        "macro_recall_at_100": 0.22477020528733122,
+        "micro_recall_at_100": 0.1624878955939962
+      },
+      {
+        "split": "validation",
+        "model": "hypergraph_cosine",
+        "packs": 8193,
+        "mrr": 0.16676083351320745,
+        "candidate_recall": 0.2724532578827636,
+        "hit_at_10": 0.3255217868912486,
+        "macro_recall_at_10": 0.020476855968159697,
+        "micro_recall_at_10": 0.014580307231832387,
+        "hit_at_50": 0.6975466861955327,
+        "macro_recall_at_50": 0.12630284870925146,
+        "micro_recall_at_50": 0.07965249350763678,
+        "hit_at_100": 0.7379470279506896,
+        "macro_recall_at_100": 0.19826991984178033,
+        "micro_recall_at_100": 0.13544555218099388
+      },
+      {
+        "split": "validation",
+        "model": "hybrid_logistic",
+        "packs": 8193,
+        "mrr": 0.5249126341879031,
+        "candidate_recall": 0.2724532578827636,
+        "hit_at_10": 0.6523861833272305,
+        "macro_recall_at_10": 0.10631952019719587,
+        "micro_recall_at_10": 0.05722633038425987,
+        "hit_at_50": 0.7417307457585743,
+        "macro_recall_at_50": 0.21077205830194093,
+        "micro_recall_at_50": 0.1450437959417228,
+        "hit_at_100": 0.7665079946295619,
+        "macro_recall_at_100": 0.23974428030420633,
+        "micro_recall_at_100": 0.17556340507944893
+      },
+      {
+        "split": "test",
+        "model": "popularity",
+        "packs": 7689,
+        "mrr": 0.42904396659140076,
+        "candidate_recall": 0.2570884938770826,
+        "hit_at_10": 0.49161139289894656,
+        "macro_recall_at_10": 0.042639034522860615,
+        "micro_recall_at_10": 0.022916760994288597,
+        "hit_at_50": 0.5488359994797763,
+        "macro_recall_at_50": 0.07798309801260006,
+        "micro_recall_at_50": 0.050898106763775604,
+        "hit_at_100": 0.710755624918715,
+        "macro_recall_at_100": 0.19667506085359487,
+        "micro_recall_at_100": 0.14743569012244265
+      },
+      {
+        "split": "test",
+        "model": "graph_heuristic",
+        "packs": 7689,
+        "mrr": 0.5125607998840926,
+        "candidate_recall": 0.2570884938770826,
+        "hit_at_10": 0.6219274287943816,
+        "macro_recall_at_10": 0.07443229991096806,
+        "micro_recall_at_10": 0.04581735153910338,
+        "hit_at_50": 0.7075042268175316,
+        "macro_recall_at_50": 0.14308958127789245,
+        "micro_recall_at_50": 0.10646947342548334,
+        "hit_at_100": 0.75159318506958,
+        "macro_recall_at_100": 0.21201086206242736,
+        "micro_recall_at_100": 0.1627846807629865
+      },
+      {
+        "split": "test",
+        "model": "hypergraph_cosine",
+        "packs": 7689,
+        "mrr": 0.15074021097390808,
+        "candidate_recall": 0.2570884938770826,
+        "hit_at_10": 0.2918454935622318,
+        "macro_recall_at_10": 0.019241110970972173,
+        "micro_recall_at_10": 0.014058588772533522,
+        "hit_at_50": 0.6777214202106906,
+        "macro_recall_at_50": 0.11805422628285402,
+        "micro_recall_at_50": 0.07905732747747457,
+        "hit_at_100": 0.7180387566653661,
+        "macro_recall_at_100": 0.18460317814334481,
+        "micro_recall_at_100": 0.1346966100269723
+      },
+      {
+        "split": "test",
+        "model": "hybrid_logistic",
+        "packs": 7689,
+        "mrr": 0.5149871873310488,
+        "candidate_recall": 0.2570884938770826,
+        "hit_at_10": 0.6392248666926779,
+        "macro_recall_at_10": 0.10184138779629386,
+        "micro_recall_at_10": 0.058592006623416105,
+        "hit_at_50": 0.728313174665106,
+        "macro_recall_at_50": 0.20055388419181616,
+        "micro_recall_at_50": 0.14697644935738635,
+        "hit_at_100": 0.7509429054493432,
+        "macro_recall_at_100": 0.22611914455875082,
+        "micro_recall_at_100": 0.17637432650077942
+      }
+    ],
+    "elapsed_seconds": 7.024358200025745
+  },
+  "candidate_sources": [
+    {
+      "split": "train",
+      "candidates": 7651249,
+      "positives": 471371,
+      "from_follow": 2713288,
+      "from_comember": 1202785,
+      "from_cluster": 1601454,
+      "from_global": 2647071,
+      "positives_from_follow": 322363,
+      "positives_from_comember": 62199,
+      "positives_from_cluster": 32481,
+      "positives_from_global": 145395
+    },
+    {
+      "split": "validation",
+      "candidates": 1596676,
+      "positives": 79052,
+      "from_follow": 574149,
+      "from_comember": 267552,
+      "from_cluster": 334521,
+      "from_global": 524340,
+      "positives_from_follow": 51333,
+      "positives_from_comember": 13464,
+      "positives_from_cluster": 8176,
+      "positives_from_global": 20671
+    },
+    {
+      "split": "test",
+      "candidates": 1410342,
+      "positives": 67878,
+      "from_follow": 491199,
+      "from_comember": 226905,
+      "from_cluster": 290733,
+      "from_global": 492090,
+      "positives_from_follow": 45193,
+      "positives_from_comember": 10526,
+      "positives_from_cluster": 7469,
+      "positives_from_global": 17847
+    }
+  ],
+  "stages": [
+    {
+      "stage": "pack_splits",
+      "elapsed_seconds": 0.08855500002391636,
+      "row_count": 363426,
+      "details": "{\"history_end\": \"2025-01-31\", \"test\": [\"2025-08-08\", \"2025-09-30\"], \"train\": [\"2025-02-08\", \"2025-05-31\"], \"validation\": [\"2025-06-08\", \"2025-07-31\"]}"
+    },
+    {
+      "stage": "history_memberships",
+      "elapsed_seconds": 0.3628793000243604,
+      "row_count": 9762636,
+      "details": "{}"
+    },
+    {
+      "stage": "history_nodes",
+      "elapsed_seconds": 0.2749201999977231,
+      "row_count": 1684915,
+      "details": "{}"
+    },
+    {
+      "stage": "history_packs",
+      "elapsed_seconds": 0.14795649994630367,
+      "row_count": 296957,
+      "details": "{}"
+    },
+    {
+      "stage": "hypergraph_incidence",
+      "elapsed_seconds": 0.7206646999693476,
+      "row_count": 9762636,
+      "details": "{}"
+    },
+    {
+      "stage": "target_packs",
+      "elapsed_seconds": 0.011620900011621416,
+      "row_count": 57303,
+      "details": "{}"
+    },
+    {
+      "stage": "target_memberships",
+      "elapsed_seconds": 0.2867567000212148,
+      "row_count": 2135239,
+      "details": "{\"label\": \"initial non-creator members only\"}"
+    },
+    {
+      "stage": "target_pack_totals",
+      "elapsed_seconds": 0.08674970001447946,
+      "row_count": 57243,
+      "details": "{}"
+    },
+    {
+      "stage": "target_creators",
+      "elapsed_seconds": 0.005330200016032904,
+      "row_count": 46642,
+      "details": "{}"
+    },
+    {
+      "stage": "history_follow_out_degree",
+      "elapsed_seconds": 13.05273060000036,
+      "row_count": 1597757,
+      "details": "{\"edge_cutoff\": \"2025-01-31\"}"
+    },
+    {
+      "stage": "history_follow_in_degree",
+      "elapsed_seconds": 123.40324760001386,
+      "row_count": 1674292,
+      "details": "{\"edge_cutoff\": \"2025-01-31\"}"
+    },
+    {
+      "stage": "history_node_features",
+      "elapsed_seconds": 0.30555710004409775,
+      "row_count": 1684915,
+      "details": "{}"
+    },
+    {
+      "stage": "creator_follow_candidates",
+      "elapsed_seconds": 102.31459900003392,
+      "row_count": 2488200,
+      "details": "{\"edge_cutoff\": \"2025-01-31\", \"maximum_per_creator\": 192}"
+    },
+    {
+      "stage": "creator_comember_candidates",
+      "elapsed_seconds": 2.1653318999451585,
+      "row_count": 969687,
+      "details": "{\"maximum_per_creator\": 160}"
+    },
+    {
+      "stage": "global_popular_nodes",
+      "elapsed_seconds": 0.2751357000088319,
+      "row_count": 1024,
+      "details": "{}"
+    },
+    {
+      "stage": "cluster_popular_nodes",
+      "elapsed_seconds": 0.402174599992577,
+      "row_count": 40960,
+      "details": "{}"
+    },
+    {
+      "stage": "creator_candidate_pool",
+      "elapsed_seconds": 2.1203868999728,
+      "row_count": 7392021,
+      "details": "{\"sources\": [\"follow\", \"historical_comember\", \"embedding_cluster\", \"global_popular\"]}"
+    },
+    {
+      "stage": "prediction_candidates",
+      "elapsed_seconds": 7.664401700021699,
+      "row_count": 10658267,
+      "details": "{\"labels_added_after_target_independent_retrieval\": true, \"maximum_per_pack\": 512}"
+    }
+  ],
+  "runtime_seconds_current_invocation": 38.243576999986544,
+  "limitations": [
+    "The fixed 2025-01-31 representation is intentionally stale for later packs but prevents representation leakage and SVD-basis drift.",
+    "Ranking is restricted to a target-independent pool of at most 512 retrievable historical users per pack.",
+    "Members absent from the historical hypergraph are cold-start users and cannot be recommended by the primary model.",
+    "Evaluation is observational and does not imply that a recommendation would cause inclusion.",
+    "No post or interaction tables exist in the supplied local dataset."
+  ]
+}

@@ -1,0 +1,6 @@
+work/
+output/
+outputs/models/*.joblib
+__pycache__/
+*.pyc
+
